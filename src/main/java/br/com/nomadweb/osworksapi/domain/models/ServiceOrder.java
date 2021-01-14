@@ -1,27 +1,46 @@
 package br.com.nomadweb.osworksapi.domain.models;
 
+import br.com.nomadweb.osworksapi.domain.validationgroups.ClientId;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.persistence.*;
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.groups.ConvertGroup;
+import javax.validation.groups.Default;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.Objects;
 
 @Entity
+@Table(name = "service_orders")
 public class ServiceOrder {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Valid
+    @ConvertGroup(from = Default.class, to = ClientId.class)
     @ManyToOne
+    @NotNull
     private Client client;
 
+    @NotBlank
     private String description;
+
+    @NotNull
     private BigDecimal price;
 
     @Enumerated(EnumType.STRING)
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private ServiceOrderStatus status;
 
-    private LocalDateTime openDate;
-    private LocalDateTime closeDate;
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private OffsetDateTime openDate;
+
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private OffsetDateTime closeDate;
 
     public Long getId() {
         return id;
@@ -63,19 +82,19 @@ public class ServiceOrder {
         this.status = status;
     }
 
-    public LocalDateTime getOpenDate() {
+    public OffsetDateTime getOpenDate() {
         return openDate;
     }
 
-    public void setOpenDate(LocalDateTime openDate) {
+    public void setOpenDate(OffsetDateTime openDate) {
         this.openDate = openDate;
     }
 
-    public LocalDateTime getCloseDate() {
+    public OffsetDateTime getCloseDate() {
         return closeDate;
     }
 
-    public void setCloseDate(LocalDateTime closeDate) {
+    public void setCloseDate(OffsetDateTime closeDate) {
         this.closeDate = closeDate;
     }
 
