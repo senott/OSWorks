@@ -1,5 +1,7 @@
 package br.com.nomadweb.osworksapi.domain.models;
 
+import br.com.nomadweb.osworksapi.domain.exceptions.BusinessException;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
@@ -100,5 +102,13 @@ public class ServiceOrder {
     @Override
     public int hashCode() {
         return Objects.hash(id);
+    }
+
+    public void close() {
+        if (!getStatus().equals(ServiceOrderStatus.OPEN)) {
+            throw new BusinessException("Ordem de serviço não pode ser finalizada.");
+        }
+        setStatus(ServiceOrderStatus.CLOSED);
+        setCloseDate(OffsetDateTime.now());
     }
 }

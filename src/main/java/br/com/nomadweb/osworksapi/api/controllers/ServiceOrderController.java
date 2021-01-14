@@ -3,21 +3,23 @@ package br.com.nomadweb.osworksapi.api.controllers;
 import br.com.nomadweb.osworksapi.api.dtos.ServiceOrderCreateDTO;
 import br.com.nomadweb.osworksapi.api.dtos.ServiceOrderDTO;
 import br.com.nomadweb.osworksapi.domain.models.ServiceOrder;
-import br.com.nomadweb.osworksapi.domain.services.ServiceOrderCreateService;
-import br.com.nomadweb.osworksapi.domain.services.ServiceOrderDTOToEntityService;
-import br.com.nomadweb.osworksapi.domain.services.ServiceOrderIndexService;
-import br.com.nomadweb.osworksapi.domain.services.ServiceOrderShowService;
+import br.com.nomadweb.osworksapi.domain.services.*;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.lang.reflect.Type;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/serviceorders")
 public class ServiceOrderController {
+    @Autowired
+    private ModelMapper modelMapper;
+
     @Autowired
     private ServiceOrderCreateService serviceOrderCreateService;
 
@@ -46,5 +48,15 @@ public class ServiceOrderController {
     @GetMapping("/{id}")
     public ResponseEntity<ServiceOrderDTO> show(@PathVariable Long id) {
         return serviceOrderShowService.execute(id);
+    }
+
+    @Autowired
+    private ServiceOrderCloseService serviceOrderCloseService;
+
+    @PatchMapping("/{id}/close")
+    public ResponseEntity<ServiceOrderDTO> close(@PathVariable Long id) {
+        ServiceOrder serviceOrder = serviceOrderCloseService.execute(id);
+
+        return ResponseEntity.ok(modelMapper.map(serviceOrder, ServiceOrderDTO.class));
     }
 }
