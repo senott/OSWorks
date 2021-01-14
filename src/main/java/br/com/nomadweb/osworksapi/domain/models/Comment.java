@@ -15,7 +15,7 @@ public class Comment {
     private ServiceOrder serviceOrder;
 
     private String description;
-    private OffsetDateTime dateSent;
+    private OffsetDateTime sentDate;
 
     public Long getId() {
         return id;
@@ -41,12 +41,12 @@ public class Comment {
         this.description = description;
     }
 
-    public OffsetDateTime getDateSent() {
-        return dateSent;
+    public OffsetDateTime getSentDate() {
+        return sentDate;
     }
 
-    public void setDateSent(OffsetDateTime dateSent) {
-        this.dateSent = dateSent;
+    public void setSentDate(OffsetDateTime sentDate) {
+        this.sentDate = sentDate;
     }
 
     @Override
