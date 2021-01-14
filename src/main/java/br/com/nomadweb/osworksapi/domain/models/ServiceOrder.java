@@ -1,16 +1,10 @@
 package br.com.nomadweb.osworksapi.domain.models;
 
-import br.com.nomadweb.osworksapi.domain.validationgroups.ClientId;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import javax.persistence.*;
-import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.groups.ConvertGroup;
-import javax.validation.groups.Default;
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -31,6 +25,9 @@ public class ServiceOrder {
 
     private OffsetDateTime openDate;
     private OffsetDateTime closeDate;
+
+    @OneToMany(mappedBy = "serviceOrder")
+    private List<Comment> comments = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -86,6 +83,10 @@ public class ServiceOrder {
 
     public void setCloseDate(OffsetDateTime closeDate) {
         this.closeDate = closeDate;
+    }
+
+    public List<Comment> getComments() {
+        return comments;
     }
 
     @Override
