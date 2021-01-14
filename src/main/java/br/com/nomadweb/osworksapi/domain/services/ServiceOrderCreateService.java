@@ -20,10 +20,8 @@ public class ServiceOrderCreateService {
     @Autowired
     private ClientRepository clientRepository;
 
-    @Autowired
-    private ServiceOrderToDTOService serviceOrderToDTOService;
 
-    public ServiceOrderDTO execute(ServiceOrder serviceOrder) {
+    public ServiceOrder execute(ServiceOrder serviceOrder) {
         Client client = clientRepository.findById(serviceOrder.getClient().getId())
                 .orElseThrow(() -> new BusinessException("Cliente não encontrado."));
 
@@ -31,6 +29,6 @@ public class ServiceOrderCreateService {
         serviceOrder.setStatus(ServiceOrderStatus.OPEN);
         serviceOrder.setOpenDate(OffsetDateTime.now());
 
-        return serviceOrderToDTOService.execute(serviceOrderRepository.save(serviceOrder));
+        return serviceOrderRepository.save(serviceOrder);
     }
 }

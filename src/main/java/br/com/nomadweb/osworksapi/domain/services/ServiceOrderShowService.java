@@ -1,6 +1,7 @@
 package br.com.nomadweb.osworksapi.domain.services;
 
 import br.com.nomadweb.osworksapi.api.dtos.ServiceOrderDTO;
+import br.com.nomadweb.osworksapi.domain.exceptions.EntityNotFoundException;
 import br.com.nomadweb.osworksapi.domain.models.ServiceOrder;
 import br.com.nomadweb.osworksapi.domain.repositories.ServiceOrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,12 +15,10 @@ public class ServiceOrderShowService {
     @Autowired
     private ServiceOrderRepository serviceOrderRepository;
 
-    @Autowired
-    private ServiceOrderToDTOService serviceOrderToDTOService;
+    public ServiceOrder execute(Long id) {
+        ServiceOrder serviceOrder = serviceOrderRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Ordem de serviço não encontrada."));
 
-    public ResponseEntity<ServiceOrderDTO> execute(Long id) {
-        Optional<ServiceOrder> serviceOrder = serviceOrderRepository.findById(id);
-
-        return serviceOrder.map(order -> ResponseEntity.ok(serviceOrderToDTOService.execute(order))).orElseGet(() -> ResponseEntity.notFound().build());
+        return serviceOrder;
     }
 }

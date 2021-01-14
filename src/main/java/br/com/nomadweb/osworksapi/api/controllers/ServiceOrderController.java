@@ -11,27 +11,21 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.lang.reflect.Type;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/serviceorders")
 public class ServiceOrderController {
     @Autowired
-    private ModelMapper modelMapper;
-
-    @Autowired
     private ServiceOrderCreateService serviceOrderCreateService;
-
-    @Autowired
-    private ServiceOrderDTOToEntityService serviceOrderDTOToEntityService;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ServiceOrderDTO create(@Valid @RequestBody ServiceOrderCreateDTO serviceOrderCreateDTO) {
-        ServiceOrder serviceOrder = serviceOrderDTOToEntityService.execute(serviceOrderCreateDTO);
+        ServiceOrder serviceOrder = toModel(serviceOrderCreateDTO);
 
-        return serviceOrderCreateService.execute(serviceOrder);
+        return toDTO(serviceOrderCreateService.execute(serviceOrder));
     }
 
     @Autowired
@@ -39,7 +33,7 @@ public class ServiceOrderController {
 
     @GetMapping
     public List<ServiceOrderDTO> index() {
-        return serviceOrderIndexService.execute();
+        return serviceOrderIndexService.execute().stream().map(serviceOrder -> toDTO(serviceOrder)).collect(Collectors.toList());
     }
 
     @Autowired
@@ -47,7 +41,7 @@ public class ServiceOrderController {
 
     @GetMapping("/{id}")
     public ResponseEntity<ServiceOrderDTO> show(@PathVariable Long id) {
-        return serviceOrderShowService.execute(id);
+        return ResponseEntity.ok(toDTO(serviceOrderShowService.execute(id)));
     }
 
     @Autowired
@@ -57,6 +51,17 @@ public class ServiceOrderController {
     public ResponseEntity<ServiceOrderDTO> close(@PathVariable Long id) {
         ServiceOrder serviceOrder = serviceOrderCloseService.execute(id);
 
-        return ResponseEntity.ok(modelMapper.map(serviceOrder, ServiceOrderDTO.class));
+        return ResponseEntity.ok(toDTO(serviceOrder));
+    }
+
+    @Autowired
+    private ModelMapper modelMapper;
+
+    private ServiceOrderDTO toDTO(ServiceOrder execute) {
+        return modelMapper.map(execute, ServiceOrderDTO.class);
+    }
+
+    private ServiceOrder toModel(ServiceOrderCreateDTO serviceOrderCreateDTO) {
+        return modelMapper.map(serviceOrderCreateDTO, ServiceOrder.class);
     }
 }
