@@ -1,8 +1,10 @@
 package br.com.nomadweb.osworksapi.api.controllers;
 
+import br.com.nomadweb.osworksapi.api.dtos.ServiceOrderCreateDTO;
 import br.com.nomadweb.osworksapi.api.dtos.ServiceOrderDTO;
 import br.com.nomadweb.osworksapi.domain.models.ServiceOrder;
 import br.com.nomadweb.osworksapi.domain.services.ServiceOrderCreateService;
+import br.com.nomadweb.osworksapi.domain.services.ServiceOrderDTOToEntityService;
 import br.com.nomadweb.osworksapi.domain.services.ServiceOrderIndexService;
 import br.com.nomadweb.osworksapi.domain.services.ServiceOrderShowService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,9 +21,14 @@ public class ServiceOrderController {
     @Autowired
     private ServiceOrderCreateService serviceOrderCreateService;
 
+    @Autowired
+    private ServiceOrderDTOToEntityService serviceOrderDTOToEntityService;
+
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ServiceOrderDTO create(@Valid @RequestBody ServiceOrder serviceOrder) {
+    public ServiceOrderDTO create(@Valid @RequestBody ServiceOrderCreateDTO serviceOrderCreateDTO) {
+        ServiceOrder serviceOrder = serviceOrderDTOToEntityService.toEntity(serviceOrderCreateDTO);
+
         return serviceOrderCreateService.create(serviceOrder);
     }
 

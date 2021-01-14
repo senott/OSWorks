@@ -7,7 +7,7 @@ import java.time.OffsetDateTime;
 
 public class ServiceOrderDTO {
     private Long id;
-    private String clientName;
+    private ClientShortDTO client;
     private String description;
     private BigDecimal price;
     private ServiceOrderStatus status;
@@ -22,12 +22,12 @@ public class ServiceOrderDTO {
         this.id = id;
     }
 
-    public String getClientName() {
-        return clientName;
+    public ClientShortDTO getClient() {
+        return client;
     }
 
-    public void setClientName(String clientName) {
-        this.clientName = clientName;
+    public void setClient(ClientShortDTO client) {
+        this.client = client;
     }
 
     public String getDescription() {

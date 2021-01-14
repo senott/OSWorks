@@ -20,26 +20,16 @@ public class ServiceOrder {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Valid
-    @ConvertGroup(from = Default.class, to = ClientId.class)
     @ManyToOne
-    @NotNull
     private Client client;
 
-    @NotBlank
     private String description;
-
-    @NotNull
     private BigDecimal price;
 
     @Enumerated(EnumType.STRING)
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private ServiceOrderStatus status;
 
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private OffsetDateTime openDate;
-
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private OffsetDateTime closeDate;
 
     public Long getId() {
