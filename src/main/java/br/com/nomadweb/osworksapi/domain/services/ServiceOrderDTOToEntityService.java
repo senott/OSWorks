@@ -11,7 +11,7 @@ public class ServiceOrderDTOToEntityService {
     @Autowired
     private ModelMapper modelMapper;
 
-    public ServiceOrder toEntity(ServiceOrderCreateDTO serviceOrderCreateDTO) {
+    public ServiceOrder execute(ServiceOrderCreateDTO serviceOrderCreateDTO) {
         return modelMapper.map(serviceOrderCreateDTO, ServiceOrder.class);
     }
 }

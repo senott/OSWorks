@@ -37,7 +37,7 @@ public class ClientController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Client create(@Valid @RequestBody Client client) {
-        return clientSaveService.save(client);
+        return clientSaveService.execute(client);
     }
 
     @PutMapping("/{id}")
@@ -46,7 +46,7 @@ public class ClientController {
             return ResponseEntity.notFound().build();
         }
         client.setId(id);
-        return ResponseEntity.ok(clientSaveService.save(client));
+        return ResponseEntity.ok(clientSaveService.execute(client));
     }
 
     @Autowired
@@ -58,7 +58,7 @@ public class ClientController {
             return ResponseEntity.notFound().build();
         }
 
-        clientDeleteService.delete(id);
+        clientDeleteService.execute(id);
 
         return ResponseEntity.noContent().build();
     }

@@ -11,7 +11,7 @@ public class ClientSaveService {
     @Autowired
     private ClientRepository clientRepository;
 
-    public Client save(Client client){
+    public Client execute(Client client){
         Client existingClient = clientRepository.findByEmail(client.getEmail());
         if (existingClient != null && !existingClient.equals(client)) {
             throw new BusinessException("Já existe um cliente com este e-mail.");

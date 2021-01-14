@@ -11,7 +11,7 @@ public class ServiceOrderToDTOService {
     @Autowired
     private ModelMapper modelMapper;
 
-    public ServiceOrderDTO toDTO(ServiceOrder serviceOrder) {
+    public ServiceOrderDTO execute(ServiceOrder serviceOrder) {
         return modelMapper.map(serviceOrder, ServiceOrderDTO.class);
     }
 }

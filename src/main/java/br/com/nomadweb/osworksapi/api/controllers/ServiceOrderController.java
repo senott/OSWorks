@@ -27,9 +27,9 @@ public class ServiceOrderController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ServiceOrderDTO create(@Valid @RequestBody ServiceOrderCreateDTO serviceOrderCreateDTO) {
-        ServiceOrder serviceOrder = serviceOrderDTOToEntityService.toEntity(serviceOrderCreateDTO);
+        ServiceOrder serviceOrder = serviceOrderDTOToEntityService.execute(serviceOrderCreateDTO);
 
-        return serviceOrderCreateService.create(serviceOrder);
+        return serviceOrderCreateService.execute(serviceOrder);
     }
 
     @Autowired
@@ -37,7 +37,7 @@ public class ServiceOrderController {
 
     @GetMapping
     public List<ServiceOrderDTO> index() {
-        return serviceOrderIndexService.index();
+        return serviceOrderIndexService.execute();
     }
 
     @Autowired
@@ -45,6 +45,6 @@ public class ServiceOrderController {
 
     @GetMapping("/{id}")
     public ResponseEntity<ServiceOrderDTO> show(@PathVariable Long id) {
-        return serviceOrderShowService.show(id);
+        return serviceOrderShowService.execute(id);
     }
 }

@@ -9,7 +9,7 @@ public class ClientDeleteService {
     @Autowired
     private ClientRepository clientRepository;
 
-    public void delete(Long id) {
+    public void execute(Long id) {
         clientRepository.deleteById(id);
     }
 }
