@@ -1,6 +1,7 @@
 package br.com.nomadweb.osworksapi.api.exceptionhandlers;
 
 import br.com.nomadweb.osworksapi.domain.exceptions.BusinessException;
+import br.com.nomadweb.osworksapi.domain.exceptions.EntityNotFoundException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +21,17 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(BusinessException.class)
     public ResponseEntity<Object> handleBusinessException(BusinessException ex, WebRequest req) {
         var status = HttpStatus.BAD_REQUEST;
+        var problem = new Problem();
+        problem.setStatus(status.value());
+        problem.setTitle(ex.getMessage());
+        problem.setDateTime(OffsetDateTime.now());
+
+        return handleExceptionInternal(ex, problem, new HttpHeaders(), status, req);
+    }
+
+    @ExceptionHandler(EntityNotFoundException.class)
+    public ResponseEntity<Object> handleEntityNotFoundException(EntityNotFoundException ex, WebRequest req) {
+        var status = HttpStatus.NOT_FOUND;
         var problem = new Problem();
         problem.setStatus(status.value());
         problem.setTitle(ex.getMessage());
